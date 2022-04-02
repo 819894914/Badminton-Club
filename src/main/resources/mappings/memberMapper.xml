@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cai.badmintonclub.mapper.memberMapper">
+
+    <select id="findallmember" resultType="member">
+        select  * from member
+    </select>
+
+    <select id="findmemberbyid" parameterType="int" resultType="member">
+        select * from member where member_id=#{memberid}
+    </select>
+
+    <insert id="addmember" parameterType="member">
+        insert into member (member_name,member_sex,member_grade,member_identity,member_phone,member_account,member_password,member_ismember)
+                    values (#{membername},#{membersex},#{membergrade},#{memberidentity},#{memberphone},#{memberaccount},#{memberpassword},"1")
+    </insert>
+
+    <update id="updatemember" parameterType="member">
+        update member set member_name=#{membername},member_sex=#{membersex},member_grade=#{membergrade},member_identity=#{memberidentity},member_phone=#{memberphone} where member_id=#{memberid}
+    </update>
+
+    <delete id="deletemember" parameterType="int">
+        delete from  member where member_id=#{memberid}
+    </delete>
+</mapper>

@@ -1,0 +1,61 @@
+body{
+    font: 20px 微软雅黑;
+    height: 100%;
+    width: 100%;
+}
+#top{
+    background: #122665;
+    height: 40px;
+    margin: 0 auto;
+    color: white;
+    text-align: right;
+    padding-right: 20px;
+}
+#top div{
+    padding-top: 5px;
+}
+#top a{
+    text-decoration:none;
+}
+#header{
+    width: auto;
+    height: 180px;
+    background: #1b5ca5;
+}
+#navarea {
+    height: 60px;
+    background: #3a8dcc;
+}
+#nav li{
+    display: inline;
+    width: 99px;
+    height: 40px;
+    line-height: 41px;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    margin-left: 30px;
+}
+#nav{
+    text-align: center;
+    margin: 0px;
+    padding-top: 10px;
+}
+#nav li a{
+    color: white;
+    text-decoration:none;
+}
+#base{
+    width: auto;
+    height: 180px;
+    background: #1b5ca5;
+    margin-top: 20px;
+}
+#bottom{
+    background: #122665;
+    height: 40px;
+    margin: 0 auto;
+    color: white;
+    font: 20px 微软雅黑;
+    padding-top: 5px;
+}

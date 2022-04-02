@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" >
+    <title>个人信息</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css">
+</head>
+<body>
+<div th:replace="~{Common/managementcommon::topmessages}"></div>
+<div align="center" style="margin-top: 200px;font-size: 20px;">
+    <div style="margin-top: 30px">
+        <img >
+    </div>
+    <div style="margin-top: 30px">
+        <label style="display: inline">姓名:</label>
+        &nbsp&nbsp&nbsp
+        <label style="display: inline" th:text="${session.member.membername}"></label>
+    </div>
+    <div style="margin-top: 30px">
+        <label style="display: inline">性别:</label>
+        &nbsp&nbsp&nbsp
+        <label style="display: inline" th:text="${session.member.membersex}"></label>
+    </div>
+    <div style="margin-top: 30px">
+        <label style="display: inline">身份:</label>
+        &nbsp&nbsp&nbsp
+        <label style="display: inline" th:text="${session.member.memberidentity}"></label>
+    </div>
+    <div style="margin-top: 30px">
+        <label style="display: inline">年级:</label>
+        &nbsp&nbsp&nbsp
+        <label style="display: inline" th:text="${session.member.membergrade}"></label>
+    </div>
+    <div style="margin-top: 30px">
+        <label style="display: inline">号码:</label>
+        &nbsp&nbsp&nbsp
+        <label style="display: inline" th:text="${session.member.memberphone}"></label>
+    </div>
+    <div style="margin-top: 30px">
+        <label style="display: inline">审核状态:</label>
+        &nbsp&nbsp&nbsp
+        <span>
+            <label style="display: inline" th:text="通过" th:if="${session.member.memberismember}=='1'"></label>
+            <label style="display: inline" th:text="未通过" th:if="${session.member.memberismember}=='0'"></label>
+            <label style="display: inline" th:text="待审核" th:if="${session.member.memberismember}=='2'"></label>
+        </span>
+
+    </div>
+</div>
+<div align="center" style="margin-top: 30px"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updatePersonInformModal">修改个人信息</button></div>
+<div class="modal fade" id="updatePersonInformModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNewsModalLabel">修改信息</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form th:action="@{/updatePersonInform}">
+                <div class="modal-body">
+                    <input name="memberid" hidden="hidden">
+                    姓名:<input type="text" class="form-control form-control-sm" name="name">
+                    性别:&nbsp&nbsp&nbsp男 <input type="radio"  name="sex" value="男" th:attr="checked='checked'">
+                    女 <input type="radio"  name="sex" value="女">
+                    <br>
+                    手机号码<input class="form-control form-control-sm" type="text" name="phone">
+                    年级:<br><select name="grade">
+                    <option value="大一">大一</option>
+                    <option value="大二">大二</option>
+                    <option value="大三">大三</option>
+                    <option value="大四">大四</option>
+                </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" >修改</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close"></span>取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../static/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="../../static/js/bootstrap.bundle.min.js"></script>
+<style>
+    body{
+        height: 100%;
+        width: 100%;
+   }
+</style>
+</html>

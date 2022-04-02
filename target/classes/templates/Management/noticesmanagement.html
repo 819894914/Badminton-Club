@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>公告管理</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css">
+</head>
+<body>
+<div th:replace="~{Common/managementcommon::topmessages}"></div>
+<div id="leftmenu" class="shadow p-3 mb-5 bg-white rounded">
+    <!--    调试写法-->
+    <!--    <div align="center"><img src="../static/images/logo.png" style="width: 180px;height: 180px"></div>-->
+    <!--    thymeleaf用法-->
+    <div align="center"><img src="../../static/images/logo.png" style="width: 150px;height: 150px"></div>
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"  align="center" style="font-size: 20px">
+        <a class="nav-link"   th:href="@{briefmanagement}">简介管理</a>
+        <a class="nav-link"  th:href="@{newsmanagement}">新闻管理</a>
+        <a class="nav-link active"  th:href="@{noticesmanagement}">公告管理</a>
+        <a class="nav-link"  th:href="@{knowledgemanagement}">知识管理</a>
+        <a class="nav-link"  th:href="@{membermanagement}">成员管理</a>
+        <a class="nav-link"  th:href="@{joinmanagement}">入社审批</a>
+    </div>
+</div>
+<div id="rightmain">
+    <!--    发布按钮-->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">发布公告</button>
+    <!--    弹出层内容-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">公告编辑</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h2>标题</h2>
+                    <div><input type="text" class="form-control" id="exampleFormControlInput1" placeholder="标题" name="noticestitle"></div>
+                    <h2>内容</h2>
+                    <div id="noticeseditor"></div>
+                </div>
+                <div class="modal-footer">
+                    <input id="noticestext" hidden="hidden" name="noticescontent">
+
+                    <button   class="btn btn-success" onclick="addnotices()">发布</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close"></span>取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form th:action="@{/findNoticesByTitle}" style="display: inline">
+        <input type="" style="width:100px;height:35px;margin-left: 30px;margin-top: 5px" name="noticesTitle" placeholder="公告标题">
+        <button class="btn btn-primary"  type="submit" style="margin-left: 20px">搜索</button>
+    </form>
+
+    <table class="table" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">标题</th>
+            <th scope="col">发布时间</th>
+            <th scope="col">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="notices,state:${page.records}">
+            <th scope="row" th:text="${notices.messagesid}"></th>
+            <td><a th:href="@{/findnoticesbyid/}+${notices.messagesid}" th:text="${notices.messagestitle}"></a></td>
+            <td th:text="${notices.messagesreleasedate}"></td>
+            <td>
+                <a th:href="@{deletenotices/}+${notices.messagesid}"><button type="button" class="btn btn-danger">删除</button></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="row" align="center" style="margin-left: 300px" th:if="${flag}==2">
+        <!--分页文字信息  -->
+        <div class="col-md-6" >当前 [[${page.current}]]页,总[[${page.pages }]]
+            页,总[[ ${page.total }]] 条记录</div>
+        <!-- 分页条信息 -->
+        <div class="col-md-6">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <!--点击首页会跳转到第一页，并且首页禁用-->
+                    <th:block th:if="${page.current==1}">
+                        <li class="active,disabled">
+                            <a>首页</a></li>
+                    </th:block>
+
+                    <th:block th:if="${page.current>1}">
+                        <li><a th:href="@{/findNoticesByTitle(pn=1,noticesTitle=${noticesTitle})}">首页</a></li>
+                    </th:block>
+                    &nbsp&nbsp&nbsp
+                    <li  th:if="${page.hasPrevious()}">
+                        <a  th:href="@{/findNoticesByTitle(pn=${page.getCurrent()-1},noticesTitle=${noticesTitle})}">
+                            <span aria-hidden="true">上一页</span>
+                        </a>
+                    </li>
+                    &nbsp&nbsp&nbsp
+                    <!--下一页-->
+                    <li  th:if="${page.hasNext()}">
+                        <a  th:href="@{/findNoticesByTitle(pn=${page.current+1},noticesTitle=${noticesTitle})}">
+                            <span aria-hidden="true">下一页</span>
+                        </a>
+                    </li>
+                    &nbsp&nbsp&nbsp
+                    <!--点击末页会跳转到最后一页，并且最后一页禁用-->
+                    <th:block th:if="${page.current<page.pages}">
+                        <li > <a th:href="@{/findNoticesByTitle(pn=${page.pages},noticesTitle=${noticesTitle})}">末页</a></li>
+
+                    </th:block>
+                    &nbsp&nbsp
+                    <th:block th:if="${page.current==page.pages}">
+                        <li class="active,disabled"> <a>末页</a></li>
+                    </th:block>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="row" align="center" style="margin-left: 300px" th:if="${flag}==1">
+        <!--分页文字信息  -->
+        <div class="col-md-6" >当前 [[${page.current}]]页,总[[${page.pages }]]
+            页,总[[ ${page.total }]] 条记录</div>
+        <!-- 分页条信息 -->
+        <div class="col-md-6">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <!--点击首页会跳转到第一页，并且首页禁用-->
+                    <th:block th:if="${page.current==1}">
+                        <li class="active,disabled">
+                            <a>首页</a></li>
+                    </th:block>
+
+                    <th:block th:if="${page.current>1}">
+                        <li><a th:href="@{/noticesmanagement(pn=1)}">首页</a></li>
+                    </th:block>
+                    &nbsp&nbsp&nbsp
+                    <li  th:if="${page.hasPrevious()}">
+                        <a  th:href="@{/noticesmanagement(pn=${page.getCurrent()-1})}">
+                            <span aria-hidden="true">上一页</span>
+                        </a>
+                    </li>
+                    &nbsp&nbsp&nbsp
+                    <!--下一页-->
+                    <li  th:if="${page.hasNext()}">
+                        <a  th:href="@{/noticesmanagement(pn=${page.current+1})}">
+                            <span aria-hidden="true">下一页</span>
+                        </a>
+                    </li>
+                    &nbsp&nbsp&nbsp
+                    <!--点击末页会跳转到最后一页，并且最后一页禁用-->
+                    <th:block th:if="${page.current<page.pages}">
+                        <li > <a th:href="@{/noticesmanagement(pn=${page.pages})}">末页</a></li>
+
+                    </th:block>
+                    &nbsp&nbsp
+                    <th:block th:if="${page.current==page.pages}">
+                        <li class="active,disabled"> <a>末页</a></li>
+                    </th:block>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</div>
+</body>
+<script src="../../static/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="../../static/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../static/js/wangEditor.min.js"></script>
+<script type="text/javascript" src="../../static/js/axios.min.js"></script>
+<script type="text/javascript">
+    const E = window.wangEditor
+    const editor = new E('#noticeseditor')
+    editor.config.uploadImgShowBase64 = true
+    editor.config.menus = [
+        'head',
+        'bold',
+        'fontSize',
+        'fontName',
+        'italic',
+        'underline',
+        'strikeThrough',
+        'indent',
+        'lineHeight',
+        'foreColor',
+        'backColor',
+        'link',
+        'list',
+        'todo',
+        'justify',
+        'quote',
+        'emoticon',
+        'image',
+        'table',
+        'code',
+        'splitLine',
+        'undo',
+        'redo',
+    ]
+    editor.create()
+    function addnotices(){
+        axios.get('/addnotices', {
+            params: {
+                noticestitle: $("#exampleFormControlInput1").val(),
+                noticescontent:editor.txt.html()
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                window.alert(response.data);
+                if (response.data=="添加成功"){
+                    location.reload();
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+</script>
+<style>
+    #leftmenu{
+        height: 890px;
+        width: 250px;
+        float: left;
+    }
+    #rightmain{
+        height: auto;
+        width: 84.5%;
+        float: right;
+        padding-top: 20px;
+        padding-left: 20px;
+    }
+</style>
+</html>

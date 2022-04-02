@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新闻</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/homepage.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css">
+    <script src="../../static/js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="../../static/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div th:replace="~{Common/homepagecommon::topbar}"></div>
+    <div id="main" align="center" style="margin-top: 10px;margin-left: 500px;height: 550px" >
+
+        <table class="table table-borderless">
+            <thead>
+            <tr>
+                <th scope="col">标题</th>
+                <th scope="col">发布日期</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="messages,state:${page.records}">
+                <td ><a th:text="${messages.messagestitle}" th:href="@{/findMessageByIdAndKind?(messagesId=${messages.messagesid},messagesKind=${messages.messageskind})}"></a></td>
+                <td th:text="${messages.messagesreleasedate}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row" align="center" style="margin-left: 300px">
+        <!--分页文字信息  -->
+        <div class="col-md-6" >当前 [[${page.current}]]页,总[[${page.pages }]]
+            页,总[[ ${page.total }]] 条记录</div>
+        <!-- 分页条信息 -->
+        <div class="col-md-6">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <!--点击首页会跳转到第一页，并且首页禁用-->
+                    <th:block th:if="${page.current==1}">
+                        <li class="active,disabled">
+                            <a>首页</a></li>
+                    </th:block>
+
+                    <th:block th:if="${page.current>1}">
+                        <li><a th:href="@{/news(pn=1)}">首页</a></li>
+                    </th:block>
+                    &nbsp&nbsp&nbsp
+                    <li  th:if="${page.hasPrevious()}">
+                        <a  th:href="@{/news(pn=${page.getCurrent()-1})}">
+                            <span aria-hidden="true">上一页</span>
+                        </a>
+                    </li>
+                    &nbsp&nbsp&nbsp
+                    <!--下一页-->
+                    <li  th:if="${page.hasNext()}">
+                        <a  th:href="@{/news(pn=${page.current+1})}">
+                            <span aria-hidden="true">下一页</span>
+                        </a>
+                    </li>
+                    &nbsp&nbsp&nbsp
+                    <!--点击末页会跳转到最后一页，并且最后一页禁用-->
+                    <th:block th:if="${page.current<page.pages}">
+                        <li > <a th:href="@{/news(pn=${page.pages})}">末页</a></li>
+
+                    </th:block>
+                    &nbsp&nbsp
+                    <th:block th:if="${page.current==page.pages}">
+                        <li class="active,disabled"> <a>末页</a></li>
+
+                    </th:block>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div th:replace="~{Common/homepagecommon::bottommessages}"></div>
+</body>
+<style>
+    body{
+        width: 100%;
+        height: 1000px;
+    }
+</style>
+</html>

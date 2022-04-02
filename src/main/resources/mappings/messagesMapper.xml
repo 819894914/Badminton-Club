@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cai.badmintonclub.mapper.messagesMapper">
+
+<!--    查询社团简介-->
+    <select id="findbrief" resultType="messages">
+        select * from messages where messages_kind="简介"
+    </select>
+<!--更新社团简介-->
+    <update id="updatebrief" parameterType="String">
+        update messages set messages_content=#{messagescontent}  where messages_kind="简介"
+    </update>
+<!--查询羽毛球知识-->
+    <select id="findknowledge" resultType="messages">
+        select * from messages where messages_kind="知识"
+    </select>
+<!--更新羽毛球知识-->
+    <update id="updateknowledge" parameterType="String">
+        update messages set messages_content=#{messagescontent}  where messages_kind="知识"
+    </update>
+<!--查询所有新闻-->
+    <select id="findallnews" resultType="messages">
+        select * from messages where messages_kind="新闻"
+    </select>
+<!--添加新闻-->
+    <insert id="addnews" parameterType="messages">
+        insert into messages (messages_title,messages_content,messages_releasedate,messages_kind)
+                       values
+                       (#{messagestitle},#{messagescontent},#{messagesreleasedate},'新闻')
+    </insert>
+<!--删除新闻-->
+    <delete id="deletenews" parameterType="int">
+        delete from messages where messages_id=#{newsid}
+    </delete>
+<!--修改新闻-->
+    <update id="updatenews" parameterType="messages">
+        update messages set messages_content=#{messagescontent},messages_title=#{messagestitle},messages_releasedate=#{messagesreleasedate} where messages_id=#{messagesid}
+    </update>
+<!--根据ID查询新闻，进入对应新闻详情页-->
+    <select id="findnewsbyid" parameterType="int" resultType="messages">
+        select * from messages where messages_id=#{newsid}
+    </select>
+
+    <!--查询所有公告-->
+    <select id="findallnotices" resultType="messages">
+        select * from messages where messages_kind="公告"
+    </select>
+    <!--添加公告-->
+    <insert id="addnotices" parameterType="messages">
+        insert into messages (messages_title,messages_content,messages_releasedate,messages_kind)
+        values
+            (#{messagestitle},#{messagescontent},#{messagesreleasedate},'公告')
+    </insert>
+    <!--删除公告-->
+    <delete id="deletenotices" parameterType="int">
+        delete from messages where messages_id=#{noticesid}
+    </delete>
+    <!--修改公告-->
+    <update id="updatenotices" parameterType="messages">
+        update messages set messages_content=#{messagescontent},messages_title=#{messagestitle} where messages_id=#{messagesid}
+    </update>
+    <!--根据ID查询公告，进入对应公告详情页-->
+    <select id="findnoticesbyid" parameterType="int" resultType="messages">
+        select * from messages where messages_id=#{newsid}
+    </select>
+</mapper>

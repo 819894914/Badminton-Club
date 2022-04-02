@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div th:fragment="topbar">
+    <div id="top">
+<!--先-->
+<!--                <div>-->
+<!--                    <a th:href="@{login}" style="color: white" th:if="${session.member.membername}==null">请登录</a>-->
+<!--                    <a href="#" style="color: white" th:if="${session.member.membername}!=null" th:text="${session.member.membername}"></a>-->
+<!--                    &nbsp&nbsp&nbsp-->
+<!--                    <a th:href="@{briefmanagement}" style="color: white" th:if="${session.member.memberidentity}=='管理员'">管理员入口</a>-->
+<!--                </div>-->
+
+<!--        后-->
+        <div>
+            <a th:href="@{login}" style="color: white;font-size: 18px" th:if="${session.member.membername}==null">请登录</a>
+            <div th:if="${session.member.membername}!=null" style="display: inline">
+                <a style="background-color:#122665;font-size: 18px;color: white" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" th:text="${session.member.membername}">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" th:href="@{/personinform}">个人信息</a>
+                    <a class="dropdown-item" th:href="@{/toChangePasswordPage}">修改密码</a>
+                    <a class="dropdown-item" th:href="@{/loginOut}">注销</a>
+                </div>
+            </div>
+            &nbsp&nbsp&nbsp
+            <a th:href="@{briefmanagement}" style="color: white;font-size: 18px;display: inline" th:if="${session.member.memberidentity}=='管理员'">管理员入口</a>
+        </div>
+    </div>
+    <div id="header" align="center">
+        <img th:src="@{static/images/logo.png}" style="height: 230px;width: auto;margin-top: -15px">
+    </div>
+    <div id="navarea">
+        <div id="navmenu">
+            <div id="home">
+                <ul id="nav">
+                    <li class="nav"><a th:href="@{/index}">社团首页</a></li>
+                    <li class="nav" th:if="${session.member.memberidentity}=='游客'"><a th:href="@{joinus}">加入我们</a></li>
+                    <li class="nav"><a th:href="@{communityprofile}">社团简介</a></li>
+                    <li class="nav"><a th:href="@{notices}">社团公告</a></li>
+                    <li class="nav"><a th:href="@{news}">社团新闻</a></li>
+                    <li class="nav" th:if="${session.member.memberidentity}!='游客'"><a th:href="@{/member}">社团成员</a></li>
+                    <li class="nav" th:if="${session.member.memberidentity}!='游客'"><a th:href="@{knowledge}">羽毛球知识</a></li>
+                    <li class="nav" th:if="${session.member.memberidentity}!='游客'"><a th:href="@{messageboard}">社团成员留言板</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="bottommessages">
+    <div id="base" align="center">
+        <img th:src="@{static/images/logo.png}" style="height: 230px;width: auto;margin-top: -15px">
+    </div>
+    <div id="bottom" style="text-align: center">
+        版权归广州航海学院羽毛球社团所有
+    </div>
+</div>
+</body>
+</html>

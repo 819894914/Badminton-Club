@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新闻详情</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css">
+</head>
+<body>
+<div th:replace="~{Common/managementcommon::topmessages}"></div>
+<div id="rightmain" align="center" style="height: auto;">
+    <div align="left" style="margin-left: 40px"><a th:href="@{/newsmanagement}">返回新闻管理>></a></div>
+    <div id="newstitle" th:text="${prenews.messagestitle}" style="font-size: 20px;font-weight: 700"></div>
+    <div th:text="${prenews.messagesreleasedate}" align="center"></div>
+    <div id="newsdetails" th:utext="${prenews.messagescontent}" style="margin-top: 20px"></div>
+    <div align="center" style="margin-top: 40px;margin-bottom: 10px"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newsModal">修改</button></div>
+
+<!--        修改按钮弹出层内容-->
+    <div class="modal fade" id="newsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">新闻编辑</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+<!--                <form method="Post" th:action="@{/updatenews/}+${prenews.messagesid}">-->
+                    <div class="modal-body">
+                        <h2>标题</h2>
+                        <div><input type="text" class="form-control" id="exampleFormControlInput1" placeholder="标题" name="newstitle" th:value="${prenews.messagestitle}"></div>
+                        <h2>内容</h2>
+                        <div id="newseditor"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <input id="updatenewstext" hidden="hidden" name="newscontent">
+<!--                        <button  id="updateissue" class="btn btn-success" onclick="updatenews()">重新发布</button>-->
+                        <button   class="btn btn-success" onclick="updatenews()">重新发布</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close"></span>取消</button>
+                    </div>
+<!--                </form>-->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../static/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="../../static/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../static/js/wangEditor.min.js"></script>
+<script type="text/javascript" src="../../static/js/axios.min.js"></script>
+<script th:inline="javascript">
+    var id=[[${prenews.messagesid}]]
+    const E = window.wangEditor
+    const editor = new E('#newseditor')
+    editor.config.uploadImgShowBase64 = true
+    editor.config.menus = [
+        'head',
+        'bold',
+        'fontSize',
+        'fontName',
+        'italic',
+        'underline',
+        'strikeThrough',
+        'indent',
+        'lineHeight',
+        'foreColor',
+        'backColor',
+        'link',
+        'list',
+        'todo',
+        'justify',
+        'quote',
+        'emoticon',
+        'image',
+        'table',
+        'code',
+        'splitLine',
+        'undo',
+        'redo',
+    ]
+    editor.create()
+    var text=[[${prenews.messagescontent}]]
+    editor.txt.html(text)
+    function updatenews(){
+        axios.get('/updatenews', {
+            params: {
+                newsid : id,
+                newstitle:$("#exampleFormControlInput1").val(),
+                newscontent:editor.txt.html()
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                window.alert(response.data);
+                if (response.data=="修改成功"){
+                    location.reload();
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+</script>
+<style>
+    body{
+        height: auto;
+    }
+</style>
+</html>

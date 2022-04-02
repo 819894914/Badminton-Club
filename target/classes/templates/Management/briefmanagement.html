@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>简介管理</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css">
+</head>
+<body>
+<div th:replace="~{Common/managementcommon::topmessages}"></div>
+<div id="leftmenu" class="shadow p-3 mb-5 bg-white rounded">
+    <div align="center"><img src="../../static/images/logo.png" style="width: 150px;height: 150px"></div>
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"  align="center" style="font-size: 20px">
+        <a class="nav-link active"   th:href="@{briefmanagement}">简介管理</a>
+        <a class="nav-link"  th:href="@{newsmanagement}">新闻管理</a>
+        <a class="nav-link"  th:href="@{noticesmanagement}">公告管理</a>
+        <a class="nav-link"  th:href="@{knowledgemanagement}">知识管理</a>
+        <a class="nav-link"  th:href="@{membermanagement}">成员管理</a>
+        <a class="nav-link"  th:href="@{joinmanagement}">入社审批</a>
+        <div id="updatebrieftext" hidden="hidden"></div>
+    </div>
+</div>
+<div id="rightmain" >
+    <div align="center"style="font-size: 20px;margin-top: 20px;">社团简介</div>
+    <div id="brief" th:utext="${brief.messagescontent}" style="height: 700px;overflow:scroll;overflow-x: hidden;"></div>
+    <div align="center" style="margin-top: 20px"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#briefModal">修改社团简介</button></div>
+
+
+<!--     修改简介弹出层-->
+        <div class="modal fade" id="briefModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">简介编辑</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="Post" th:action="@{updatebrief}">
+                        <div class="modal-body">
+                                <div id="briefeditor"></div>
+                            <input id="brieftext" type="text"  hidden="hidden" name="messagescontent">
+                        </div>
+                        <div class="modal-footer">
+                            <button  id="issue" class="btn btn-success" onclick="updatebrief()">发布</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">取消</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+</div>
+</body>
+<script src="../../static/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="../../static/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../static/js/wangEditor.min.js"></script>
+<script type="text/javascript">
+
+    const E = window.wangEditor
+    const editor = new E('#briefeditor')
+    editor.config.uploadImgShowBase64 = true
+    editor.config.menus = [
+        'head',
+        'bold',
+        'fontSize',
+        'fontName',
+        'italic',
+        'underline',
+        'strikeThrough',
+        'indent',
+        'lineHeight',
+        'foreColor',
+        'backColor',
+        'link',
+        'list',
+        'todo',
+        'justify',
+        'quote',
+        'emoticon',
+        'image',
+        'table',
+        'code',
+        'splitLine',
+        'undo',
+        'redo',
+    ]
+    editor.create()
+    editor.txt.html(document.getElementById("brief").innerHTML);
+
+    function updatebrief(){
+        document.getElementById("brieftext").value=editor.txt.html()
+        document.getElementById("issue").submit;
+    }
+</script>
+<style>
+    body{
+        height: 856px;
+        width: auto;
+    }
+    #leftmenu{
+        height: 840px;
+        width: 250px;
+        float: left;
+    }
+    #rightmain{
+        height: 840px;
+        width: 84.5%;
+        float: right;
+        padding-top: 20px;
+        padding-left: 20px;
+    }
+</style>
+</html>

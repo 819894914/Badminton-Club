@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>成员管理</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css">
+</head>
+<body>
+<div th:replace="~{Common/managementcommon::topmessages}"></div>
+<div id="leftmenu" class="shadow p-3 mb-5 bg-white rounded">
+    <div align="center"><img src="../../static/images/logo.png" style="width: 150px;height: 150px"></div>
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"  align="center" style="font-size: 20px">
+        <a class="nav-link"   th:href="@{briefmanagement}">简介管理</a>
+        <a class="nav-link"  th:href="@{newsmanagement}">新闻管理</a>
+        <a class="nav-link"  th:href="@{noticesmanagement}">公告管理</a>
+        <a class="nav-link"  th:href="@{knowledgemanagement}">知识管理</a>
+        <a class="nav-link active"  th:href="@{membermanagement}">成员管理</a>
+        <a class="nav-link"  th:href="@{joinmanagement}">入社审批</a>
+    </div>
+</div>
+<div id="rightmain">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addMemberModal">添加成员</button>
+
+    <form th:action="@{/findMemeberByName}" style="display: inline">
+        <input type="" style="width:100px;height:35px;margin-left: 30px;margin-top: 5px" name="memberName" placeholder="成员姓名">
+        <button class="btn btn-primary"  type="submit" style="margin-left: 20px">搜索</button>
+    </form>
+
+
+<!--    添加成员弹出层----------------------------->
+    <div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addNewsModalLabel">添加成员</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+<!--                <form th:action="@{/addmember}">-->
+                    <div class="modal-body">
+                        <input name="memberid" hidden="hidden">
+                        账号:<input type="text" class="form-control form-control-sm"  id="addmemberaccount">
+                        密码:<input type="text" class="form-control form-control-sm"  id="addmemberpassword">
+                        姓名:<input type="text" class="form-control form-control-sm"  id="addmembername">
+                        性别:&nbsp&nbsp&nbsp男 <input type="radio"  name="addmembersex" value="男" th:attr="checked='checked'">
+                        女 <input type="radio"  name="addmembersex" value="女">
+                        <br>
+                        手机号码<input class="form-control form-control-sm" type="text"  id="addmemberphone">
+                        年级:<br><select id="addmembergrade">
+                        <option value="大一">大一</option>
+                        <option value="大二">大二</option>
+                        <option value="大三">大三</option>
+                        <option value="大四">大四</option>
+                    </select>
+                        <br>
+                        身份:<br><select id="addmemberidentity">
+                        <option value="会员">会员</option>
+                        <option value="部长">部长</option>
+                        <option value="社长">社长</option>
+                        <option value="管理员">管理员</option>
+                    </select>
+                    </div>
+                    <div class="modal-footer">
+<!--                        <button type="submit" class="btn btn-success" >添加</button>-->
+                        <button type="button" class="btn btn-success" onclick="addmember()">添加</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close"></span>取消</button>
+                    </div>
+<!--                </form>-->
+            </div>
+        </div>
+    </div>
+<!--    ----------------------------->
+    <table class="table" style="margin-top: 10px;font-size: 1.3rem" >
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">姓名</th>
+            <th scope="col">性别</th>
+            <th scope="col">年级</th>
+            <th scope="col">身份</th>
+            <th scope="col">电话号码</th>
+            <th scope="col">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="member,state:${page.records}">
+            <td th:text="${member.memberid}"></td>
+            <td th:text="${member.membername}"></td>
+            <td th:text="${member.membersex}"></td>
+            <td th:text="${member.membergrade}"></td>
+            <td th:text="${member.memberidentity}"></td>
+            <td th:text="${member.memberphone}"></td>
+            <td>
+                <button type="button" class="btn btn-secondary" th:onclick="'javascript: findmemberbyid('+${member.memberid}+')'" data-toggle="modal" data-target="#prememberModal">修改</button>
+                <a th:href="@{/deletemember/}+${member.memberid}"><button type="button" class="btn btn-danger">删除</button></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="row" align="center" style="margin-left: 300px">
+        <!--分页文字信息  -->
+        <div class="col-md-6" >当前 [[${page.current}]]页,总[[${page.pages }]]
+            页,总[[ ${page.total }]] 条记录</div>
+        <!-- 分页条信息 -->
+        <div class="col-md-6">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <!--点击首页会跳转到第一页，并且首页禁用-->
+                    <th:block th:if="${page.current==1}">
+                        <li class="active,disabled">
+                            <a>首页</a></li>
+                    </th:block>
+
+                    <th:block th:if="${page.current>1}">
+                        <li><a th:href="@{/membermanagement(pn=1)}">首页</a></li>
+                    </th:block>
+                    &nbsp&nbsp&nbsp
+                    <li  th:if="${page.hasPrevious()}">
+                        <a  th:href="@{/membermanagement(pn=${page.getCurrent()-1})}">
+                            <span aria-hidden="true">上一页</span>
+                        </a>
+                    </li>
+                    &nbsp&nbsp&nbsp
+                    <!--下一页-->
+                    <li  th:if="${page.hasNext()}">
+                        <a  th:href="@{/membermanagement(pn=${page.current+1})}">
+                            <span aria-hidden="true">下一页</span>
+                        </a>
+                    </li>
+                    &nbsp&nbsp&nbsp
+                    <!--点击末页会跳转到最后一页，并且最后一页禁用-->
+                    <th:block th:if="${page.current<page.pages}">
+                        <li > <a th:href="@{/membermanagement(pn=${page.pages})}">末页</a></li>
+
+                    </th:block>
+                    &nbsp&nbsp
+                    <th:block th:if="${page.current==page.pages}">
+                        <li class="active,disabled"> <a>末页</a></li>
+                    </th:block>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+<!--修改成员信息弹出层-->
+    <div class="modal fade" id="prememberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+                <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">信息修改</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+<!--                            <form th:action="@{/updatemember}">-->
+                                <div class="modal-body">
+                                    <input id="memberid" name="memberid" hidden="hidden" >
+                                    姓名:<input class="form-control form-control-sm" type="text" id="updatemembername" >
+                                    性别：&nbsp&nbsp&nbsp男 <input type="radio" id="preman" name="updatemembersex" value="男" th:attr="checked='checked'">
+                                    女 <input type="radio" id="prewomen" name="updatemembersex" value="女">
+                                    <br>
+                                    手机号码<input class="form-control form-control-sm" type="text" id="updatememberphone">
+                                    年级:<br><select id="updatemembergrade">
+                                        <option id="freshman" value="大一">大一</option>
+                                        <option id="sophomore" value="大二">大二</option>
+                                        <option id="Junior" value="大三">大三</option>
+                                        <option id="Senior" value="大四">大四</option>
+                                    </select>
+                                    <br>
+                                    身份:<br><select id="updatememberidentity">
+                                        <option id="members" value="会员">会员</option>
+                                        <option id="minister" value="部长">部长</option>
+                                        <option id="president" value="社长">社长</option>
+                                        <option id="admin" value="管理员">管理员</option>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button  class="btn btn-success" onclick="updatemember()">修改</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close"></span>取消</button>
+                                </div>
+<!--                            </form>-->
+                        </div>
+                </div>
+            </div>
+</div>
+</body>
+<script src="../../static/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="../../static/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../static/js/wangEditor.min.js"></script>
+<script type="text/javascript" src="../../static/js/axios.min.js"></script>
+<script type="text/javascript">
+
+
+
+    function addmember(){
+        var addmembername=$("#addmembername").val();
+        var addmembersex=$('input:radio[name="addmembersex"]:checked').val();
+        var addmembergrade=$('#addmembergrade option:selected').text();
+        var addmemberidentity=$('#addmemberidentity option:selected').text();
+        var addmemberphone=$("#addmemberphone").val();
+        var addmemberaccount=$("#addmemberaccount").val();
+        var addmemberpassword=$("#addmemberpassword").val();
+        console.log(addmembername)
+        axios.get('/addmember', {
+            params: {
+                addmembername:addmembername,
+                addmembersex:addmembersex,
+                addmembergrade:addmembergrade,
+                addmemberidentity:addmemberidentity,
+                addmemberphone:addmemberphone,
+                addmemberaccount:addmemberaccount,
+                addmemberpassword:addmemberpassword
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                window.alert(response.data);
+                if (response.data=="添加成功") {
+                    location.reload();
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    var id
+    function findmemberbyid(memberid){
+        axios.get('/findmemberbyid/', {
+            params: {
+                memberid: memberid
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                id=response.data.memberid
+                document.getElementById("updatemembername").value=response.data.membername
+                document.getElementById("updatememberphone").value=response.data.memberphone
+                switch (response.data.membersex){
+                    case "男":
+                        $("#preman").attr("checked","checked");
+                        break;
+                    case "女":
+                        $("#prewomen").attr("checked","checked");
+                        break;
+                }
+                switch (response.data.membergrade){
+                    case "大一":
+                        $("#freshman").attr("selected", "selected");
+                        break;
+                    case "大二":
+                        $("#sophomore").attr("selected", "selected");
+                        break;
+                    case "大三":
+                        $("#Junior").attr("selected", "selected");
+                        break;
+                    case "大四":
+                        $("#Senior").attr("selected", "selected");
+                        break;
+                }
+
+                switch (response.data.memberidentity){
+                    case "会员":
+                        $("#members").attr("selected", "selected");
+                        break;
+                    case "部长":
+                        $("#minister").attr("selected", "selected");
+                        break;
+                    case "社长":
+                        $("#president").attr("selected", "selected");
+                        break;
+                    case "管理员":
+                        $("#admin").attr("selected", "selected");
+                        break;
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+
+    function updatemember(){
+        axios.get('/updatemember', {
+            params: {
+                memberid: id,
+                membername:$("#updatemembername").val(),
+                membersex:$('input:radio[name="updatemembersex"]:checked').val(),
+                membergrade:$("#updatemembergrade").val(),
+                memberidentity:$("#updatememberidentity").val(),
+                memberphone:$("#updatememberphone").val()
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                window.alert(response.data);
+                if (response.data=="修改成功") {
+                    location.reload();
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+</script>
+<style>
+    #leftmenu{
+        height: 890px;
+        width: 250px;
+        float: left;
+    }
+    #rightmain{
+        height: auto;
+        width: 84.5%;
+        float: right;
+        padding-top: 20px;
+        padding-left: 20px;
+    }
+</style>
+</html>

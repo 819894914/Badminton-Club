@@ -36,7 +36,7 @@ public class loginController {
             return "UserAction/login";
         } else {
             session.setAttribute("member", member);
-            return "index";
+            return "redirect:/index";
         }
     }
 

@@ -30,11 +30,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="member,state:${toAuditMemberList}" th:if="${state.index} le 10">
-                <td th:text="${member.membername}"></td>
+            <tr th:each="toAuditMember,state:${toAuditMemberList}" th:if="${state.index} le 10">
+                <td th:text="${toAuditMember.membername}"></td>
                 <td >
-                    <button class="btn btn-success" ><a th:href="@{/doApprove/}+${member.memberid}" style="color: white">通过</a></button>
-                    <button class="btn btn-danger" ><a th:href="@{/refuse/}+${member.memberid}" style="color: white">拒绝</a></button>
+                    <button class="btn btn-success" ><a th:href="@{/doApprove/}+${toAuditMember.memberid}" style="color: white">通过</a></button>
+                    <button class="btn btn-danger" ><a th:href="@{/refuse/}+${toAuditMember.memberid}" style="color: white">拒绝</a></button>
                 </td>
             </tr>
             </tbody>

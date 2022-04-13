@@ -12,7 +12,7 @@
 
     <insert id="addmember" parameterType="member">
         insert into member (member_name,member_sex,member_grade,member_identity,member_phone,member_account,member_password,member_ismember)
-                    values (#{membername},#{membersex},#{membergrade},#{memberidentity},#{memberphone},#{memberaccount},#{memberpassword},"1")
+                    values (#{membername},#{membersex},#{membergrade},#{memberidentity},#{memberphone},#{memberaccount},#{memberpassword},true)
     </insert>
 
     <update id="updatemember" parameterType="member">

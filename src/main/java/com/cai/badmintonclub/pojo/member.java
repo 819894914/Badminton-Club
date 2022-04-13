@@ -20,12 +20,10 @@ public class member {
     private String memberidentity;
     @TableField("member_phone")
     private String memberphone;
-    @TableField("member_iconpath")
-    private String membericon;
     @TableField("member_account")
     private String memberaccount;
     @TableField("member_password")
     private String memberpassword;
     @TableField("member_ismember")
-    private Integer memberismember;
+    private Boolean memberismember;
 }

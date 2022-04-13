@@ -36,13 +36,12 @@
         &nbsp&nbsp&nbsp
         <label style="display: inline" th:text="${session.member.memberphone}"></label>
     </div>
-    <div style="margin-top: 30px">
+    <div style="margin-top: 30px"  th:if="${session.member.memberismember == false}">
         <label style="display: inline">审核状态:</label>
         &nbsp&nbsp&nbsp
         <span>
-            <label style="display: inline" th:text="通过" th:if="${session.member.memberismember}=='1'"></label>
-            <label style="display: inline" th:text="未通过" th:if="${session.member.memberismember}=='0'"></label>
-            <label style="display: inline" th:text="待审核" th:if="${session.member.memberismember}=='2'"></label>
+            <label style="display: inline" th:text="未通过" th:if="${status}=='0'"></label>
+            <label style="display: inline" th:text="待审核" th:if="${status}=='2'"></label>
         </span>
 
     </div>

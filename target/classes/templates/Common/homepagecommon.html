@@ -7,15 +7,6 @@
 <body>
 <div th:fragment="topbar">
     <div id="top">
-<!--先-->
-<!--                <div>-->
-<!--                    <a th:href="@{login}" style="color: white" th:if="${session.member.membername}==null">请登录</a>-->
-<!--                    <a href="#" style="color: white" th:if="${session.member.membername}!=null" th:text="${session.member.membername}"></a>-->
-<!--                    &nbsp&nbsp&nbsp-->
-<!--                    <a th:href="@{briefmanagement}" style="color: white" th:if="${session.member.memberidentity}=='管理员'">管理员入口</a>-->
-<!--                </div>-->
-
-<!--        后-->
         <div>
             <a th:href="@{login}" style="color: white;font-size: 18px" th:if="${session.member.membername}==null">请登录</a>
             <div th:if="${session.member.membername}!=null" style="display: inline">
@@ -44,7 +35,7 @@
                     <li class="nav"><a th:href="@{notices}">社团公告</a></li>
                     <li class="nav"><a th:href="@{news}">社团新闻</a></li>
                     <li class="nav" th:if="${session.member.memberidentity}!='游客'"><a th:href="@{/member}">社团成员</a></li>
-                    <li class="nav" th:if="${session.member.memberidentity}!='游客'"><a th:href="@{knowledge}">羽毛球知识</a></li>
+                    <li class="nav" ><a th:href="@{knowledge}">羽毛球知识</a></li>
                     <li class="nav" th:if="${session.member.memberidentity}!='游客'"><a th:href="@{messageboard}">社团成员留言板</a></li>
                 </ul>
             </div>

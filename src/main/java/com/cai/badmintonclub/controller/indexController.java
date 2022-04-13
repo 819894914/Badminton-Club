@@ -60,7 +60,8 @@ public class indexController {
     public String news(Model model,@RequestParam(value = "pn", defaultValue = "1") Integer pn){
         Page<messages> page=new Page<>(pn,10);
         QueryWrapper<messages> queryNewsWrapper=new QueryWrapper<>();
-        queryNewsWrapper.eq("messages_kind","新闻");
+        queryNewsWrapper.eq("messages_kind","新闻")
+                .orderByDesc("messages_id");
         Page<messages> NewsPage = this.findMessagesService.getBaseMapper().selectPage(page,queryNewsWrapper);
         model.addAttribute("page",NewsPage);
         return  "ClubHomepage/news";
@@ -71,7 +72,8 @@ public class indexController {
     public String notices(Model model,@RequestParam(value = "pn", defaultValue = "1") Integer pn){
         Page<messages> page=new Page<>(pn,10);
         QueryWrapper<messages> queryNoticesWrapper=new QueryWrapper<>();
-        queryNoticesWrapper.eq("messages_kind","公告");
+        queryNoticesWrapper.eq("messages_kind","公告")
+                .orderByDesc("messages_id");
         Page<messages> noticesPage = this.findMessagesService.getBaseMapper().selectPage(page,queryNoticesWrapper);
         model.addAttribute("page",noticesPage);
         return "ClubHomepage/notices";
@@ -81,7 +83,6 @@ public class indexController {
     public String messageboard(Model model,@RequestParam(value = "pn", defaultValue = "1") Integer pn){
         Page<messagesBoard> page=new Page<>(pn,10);
         Page<messagesBoard> messagesBoardPage=this.messagesBoardService.findAllMessages(page);
-//        Page<messagesBoard> messagesBoardPage=this.messagesBoardService.getBaseMapper().selectPage(page,null);
         model.addAttribute("page",messagesBoardPage);
         return "ClubHomepage/messageboard";
     }

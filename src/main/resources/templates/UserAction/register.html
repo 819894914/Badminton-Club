@@ -14,8 +14,9 @@
             <!-- class="sr-only"将label标签隐藏 -->
             <label for="exampleInputUsername1" class="col-sm-2 control-label inline-style font-position-right">账号</label>
             <div class="col-sm-9 inline-style ">
-                <input type="text" class="form-control" id="exampleInputUsername1" name="account" th:attr="placeholder=${accountErrorMsg}">
+                <input type="text" class="form-control" id="exampleInputUsername1" name="account" placeholder="账号">
             </div>
+            <p class="tips" th:text="${accountErrorMsg}"></p>
         </div>
         <div class="form-group">
             <!--<h2 class="form-signin-heading">注册</h2>-->
@@ -23,14 +24,14 @@
             <div class="col-sm-9  inline-style">
                 <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="密码">
             </div>
+            <p class="tips" th:text="${passwordErrorMsg}"></p>
         </div>
         <div class="form-group">
             <label for="exampleInputUsername1" class="col-sm-2 control-label  inline-style font-position-right">姓名</label>
             <div class="col-sm-9  inline-style">
                 <input type="text" class="form-control" id="exampleInputEmail1"  name="name" placeholder="姓名">
             </div>
-            <div class="form-group">
-            </div>
+            <p class="tips" th:text="${nameErrorMsg}"></p>
         </div>
         <div class="form-group">
             <label for="exampleInputUsername1" class="col-sm-2 control-label  inline-style font-position-right">性别</label>
@@ -60,6 +61,7 @@
             <div class="col-sm-9  inline-style">
                 <input type="tel" class="form-control" id="exampleInputPhone1" name="phone" placeholder="手机">
             </div>
+            <p class="tips" th:text="${phoneErrorMsg}"></p>
         </div>
 
         <div class="form-group">
@@ -72,30 +74,11 @@
 <div align="center" th:text="${errorMsg}" style="color: red"></div>
 </body>
 <style>
-    exampleInputUsername1::-webkit-input-placeholder{
-        color:red;
-    }
-    exampleInputUsername1::-moz-placeholder{   /* Mozilla Firefox 19+ */
-        color:red;
-    }
-    exampleInputUsername1:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
-        color:red;
-    }
-    exampleInputUsername1:-ms-input-placeholder { /* Internet Explorer 10-11 */
-        color: red;
-    }
 
-    exampleInputPassword1::-webkit-input-placeholder{
-        color:red;
-    }
-    exampleInputPassword1::-moz-placeholder{   /* Mozilla Firefox 19+ */
-        color:red;
-    }
-    exampleInputPassword1:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
-        color:red;
-    }
-    exampleInputPassword1:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    .tips{
+        font-size: 18px;
         color: red;
+        text-align: center;
     }
 
     .container1 {

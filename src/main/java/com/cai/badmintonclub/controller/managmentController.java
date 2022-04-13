@@ -49,13 +49,8 @@ public class managmentController {
     @RequestMapping("/joinmanagement")
     public ModelAndView joinmanagement(){
         ModelAndView modelAndView=new ModelAndView();
-        QueryWrapper<member> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("member_ismember","2");
-        List<member> toAuditMemberList=this.loginService.getBaseMapper().selectList(queryWrapper);
-
-        QueryWrapper<member> queryFalidMemberWrapper=new QueryWrapper<>();
-        queryFalidMemberWrapper.eq("member_ismember","0");
-        List<member> faildMemberList=this.loginService.getBaseMapper().selectList(queryFalidMemberWrapper);
+        List<member> toAuditMemberList=this.loginService.findToAuditMember();
+        List<member> faildMemberList=this.loginService.findFaildMember();
         modelAndView.addObject("toAuditMemberList",toAuditMemberList);
         modelAndView.addObject("faildMemberList",faildMemberList);
         modelAndView.setViewName("Management/joinmanagement");
@@ -65,20 +60,13 @@ public class managmentController {
 
     @RequestMapping("/doApprove/{memberid}")
     public String doApprove(@PathVariable("memberid") Integer memberId){
-        UpdateWrapper<member> updateWrapper=new UpdateWrapper<>();
-        updateWrapper.set("member_ismember","1")
-                .set("member_identity","会员")
-                .eq("member_id",memberId);
-        this.loginService.update(updateWrapper);
+        this.loginService.approveAdmissionApplication(memberId);
         return "redirect:/joinmanagement";
     }
 
     @RequestMapping("/refuse/{memberid}")
     public String refuse(@PathVariable("memberid") Integer memberId){
-        UpdateWrapper<member> updateWrapper=new UpdateWrapper<>();
-        updateWrapper.set("member_ismember","0")
-                .eq("member_id",memberId);
-        this.loginService.update(updateWrapper);
+        this.loginService.refuseAdmissionApplication(memberId);
         return "redirect:/joinmanagement";
     }
 
@@ -128,6 +116,10 @@ public class managmentController {
         if (newstitle.equals("")) {
             return "标题不能为空";
         }
+
+        if (newscontent.equals("")){
+            return "内容不能为空";
+        }
         else {
             this.messagesService.addnews(newstitle, newscontent);
             return "添加成功";
@@ -148,6 +140,9 @@ public class managmentController {
     public String updatenews(String newstitle, String newscontent, Integer newsid){
         if (newstitle.equals("")){
             return "标题不能为空";
+        }
+        if (newscontent.equals("")){
+            return "内容不能为空";
         }
         else{
             this.messagesService.updatenews(newstitle,newscontent,newsid);
@@ -184,6 +179,9 @@ public class managmentController {
         if (noticestitle.equals("")){
             return "标题不能为空";
         }
+        if (noticescontent.equals("")){
+            return "内容不能为空";
+        }
         else {
             this.messagesService.addnotices(noticestitle,noticescontent);
             return "添加成功";
@@ -202,6 +200,9 @@ public class managmentController {
     public String updatenotices(String noticestitle, String noticescontent,Integer noticesid){
         if (noticestitle.equals("")){
             return "标题不能为空";
+        }
+        if (noticescontent.equals("")){
+            return "内容不能为空";
         }
         else {
             this.messagesService.updatenotices(noticestitle, noticescontent, noticesid);

@@ -49,7 +49,19 @@ public class loginController {
     @RequestMapping("/doRegister")
     public String doregister(String account, String password, String name, String sex, String grade, String phone, Model Model) {
         if(!account.matches("^[a-zA-Z][a-zA-Z0-9_]{3,9}$")){
-            Model.addAttribute("accountErrorMsg", "账号必须字母开头，长度为4到10字节，允许字母数字下划线");
+            Model.addAttribute("accountErrorMsg", "账号必须字母开头，长度为4到10位，允许字母数字下划线");
+            return "UserAction/register";
+        }
+        if (!password.matches("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{4,8}$")){
+            Model.addAttribute("passwordErrorMsg", "姓名不能为空");
+            return "UserAction/register";
+        }
+        if (!name.matches("^[\u4e00-\u9fa5]{0,4}")){
+            Model.addAttribute("nameErrorMsg","请输入正确的姓名，只允许汉字，长度为1到4位");
+            return "UserAction/register";
+        }
+        if (!phone.matches("^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$")){
+            Model.addAttribute("phoneErrorMsg","请输入正确的手机号码");
             return "UserAction/register";
         }
             member member = new member();
@@ -59,8 +71,7 @@ public class loginController {
             member.setMembersex(sex);
             member.setMembergrade(grade);
             member.setMemberphone(phone);
-            member.setMemberismember(2);
-            member.setMembericon(null);
+            member.setMemberismember(false);
             member.setMemberidentity("游客");
             QueryWrapper<member> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("member_account", account);
@@ -70,12 +81,17 @@ public class loginController {
                 return "UserAction/register";
             } else {
                 this.loginService.save(member);
+                member member1=this.loginService.getOne(queryWrapper);
+                this.loginService.insertAdmissionApplication(member1.getMemberid());
                 return "redirect:/login";
             }
     }
 
     @RequestMapping("/personinform")
-    public String personinform(){
+    public String personinform(HttpSession HttpSession,Model model){
+        member member=(member)HttpSession.getAttribute("member");
+        Integer status=this.loginService.findStatusByMemberId(member.getMemberid());
+        model.addAttribute("status",status);
         return "UserAction/personinform";
     }
 

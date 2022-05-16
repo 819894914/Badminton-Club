@@ -26,7 +26,7 @@
 <!--     修改简介弹出层-->
         <div class="modal fade" id="briefModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">简介编辑</h5>
@@ -56,6 +56,7 @@
 
     const E = window.wangEditor
     const editor = new E('#briefeditor')
+    editor.config.height = 700
     editor.config.uploadImgServer = '/upload-img'
     editor.config.uploadFileName = 'fileName'
     editor.config.uploadImgMaxSize = 2 * 1024 * 1024 // 2M

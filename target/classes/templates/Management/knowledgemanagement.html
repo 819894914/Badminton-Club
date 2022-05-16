@@ -26,7 +26,7 @@
 
     <div class="modal fade" id="knowledgeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">羽毛球知识编辑</h5>
@@ -55,7 +55,11 @@
 <script type="text/javascript">
     const E = window.wangEditor
     const editor = new E('#knowledgeeditor')
-    editor.config.uploadImgShowBase64 = true
+    editor.config.height = 700
+    editor.config.uploadImgServer = '/upload-img'
+    editor.config.uploadFileName = 'fileName'
+    editor.config.uploadImgMaxSize = 2 * 1024 * 1024 // 2M
+    editor.config.uploadImgMaxLength = 1 // 一次最多上传 1 个图片
     editor.config.menus = [
         'head',
         'bold',

@@ -16,7 +16,7 @@
 
 <!--        修改按钮弹出层内容-->
     <div class="modal fade" id="noticesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">新闻编辑</h5>
@@ -51,6 +51,7 @@
     var id=[[${prenotices.messagesid}]]
     const E = window.wangEditor
     const editor = new E('#noticeseditor')
+    editor.config.height = 580
     editor.config.uploadImgServer = '/upload-img'
     editor.config.uploadFileName = 'fileName'
     editor.config.uploadImgMaxSize = 2 * 1024 * 1024 // 2M

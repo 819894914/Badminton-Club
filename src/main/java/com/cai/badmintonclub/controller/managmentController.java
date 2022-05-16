@@ -1,20 +1,28 @@
 package com.cai.badmintonclub.controller;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.cai.badmintonclub.pojo.member;
-import com.cai.badmintonclub.pojo.messages;
+import com.cai.badmintonclub.pojo.*;
 import com.cai.badmintonclub.service.findMessagesService;
 import com.cai.badmintonclub.service.loginService;
 import com.cai.badmintonclub.service.memberService;
 import com.cai.badmintonclub.service.messagesService;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 @Controller
 public class managmentController {
@@ -248,4 +256,30 @@ public class managmentController {
         modelAndView.setViewName("Management/noticesmanagement");
         return modelAndView;
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/upload-img",method = RequestMethod.POST)
+    public String updateImages(@RequestParam("fileName") MultipartFile file){
+        ReturnImages returnImages = new ReturnImages();
+        returnImages.setErrno("0");
+        List<Map> imageList = new ArrayList();
+        String imagesJson = null;
+        try{
+                InputStream inputStream = file.getInputStream();
+                String uploadPath = "./src/main/resources/static/upload";
+                String filename = Calendar.getInstance().getTimeInMillis()+".jpg";
+                File newfile = new File(uploadPath, filename);
+                FileUtils.copyInputStreamToFile(inputStream, newfile);
+                String url = "http://localhost:8082/images/" + filename;
+                Map<String,String> map = new HashMap();
+                map.put("url",url);
+                imageList.add(map);
+                returnImages.setData(imageList);
+                imagesJson = JSON.toJSONString(returnImages);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return imagesJson;
+    }
+
 }

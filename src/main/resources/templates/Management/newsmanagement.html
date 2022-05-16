@@ -33,7 +33,7 @@
                 </div>
                     <div class="modal-body">
                         <h2>标题</h2>
-                        <div><input type="text" class="form-control" id="exampleFormControlInput1" placeholder="标题" name="newstitle"></div>
+                        <div><input type="text" class="form-control" id="exampleFormControlInput1"  name="newstitle"></div>
                         <h2>内容</h2>
                         <div id="newseditor"></div>
                     </div>
@@ -172,7 +172,10 @@
 <script type="text/javascript">
     const E = window.wangEditor
     const editor = new E('#newseditor')
-    editor.config.uploadImgShowBase64 = true
+    editor.config.uploadImgServer = '/upload-img'
+    editor.config.uploadFileName = 'fileName'
+    editor.config.uploadImgMaxSize = 2 * 1024 * 1024 // 2M
+    editor.config.uploadImgMaxLength = 1 // 一次最多上传 1 个图片
     editor.config.menus = [
         'head',
         'bold',

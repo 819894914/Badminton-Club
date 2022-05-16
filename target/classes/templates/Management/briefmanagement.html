@@ -23,8 +23,6 @@
     <div align="center"style="font-size: 20px;margin-top: 20px;">社团简介</div>
     <div id="brief" th:utext="${brief.messagescontent}" style="height: 700px;overflow:scroll;overflow-x: hidden;"></div>
     <div align="center" style="margin-top: 20px"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#briefModal">修改社团简介</button></div>
-
-
 <!--     修改简介弹出层-->
         <div class="modal fade" id="briefModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
@@ -58,7 +56,10 @@
 
     const E = window.wangEditor
     const editor = new E('#briefeditor')
-    editor.config.uploadImgShowBase64 = true
+    editor.config.uploadImgServer = '/upload-img'
+    editor.config.uploadFileName = 'fileName'
+    editor.config.uploadImgMaxSize = 2 * 1024 * 1024 // 2M
+    editor.config.uploadImgMaxLength = 1 // 一次最多上传 1 个图片
     editor.config.menus = [
         'head',
         'bold',

@@ -2,13 +2,19 @@
 
 ## 系统设计
 
-![](D:\238\毕业设计\图\系统功能结构图.drawio.png)
-
 ## E-R图
 
-![](D:\238\毕业设计\图\E-R图-2.drawio.png)
+![](https://github.com/819894914/Badminton-Club/blob/master/src/main/resources/static/images/E-R%E5%9B%BE-2.drawio.png?raw=true)
 
 其中，游客、管理员与社团成员的属性相同，游客、管理员即该实体的身份。
+
+## 系统结构图
+
+![](https://github.com/819894914/Badminton-Club/blob/master/src/main/resources/static/images/%E7%B3%BB%E7%BB%9F%E5%8A%9F%E8%83%BD%E7%BB%93%E6%9E%84%E5%9B%BE.drawio.png?raw=true)
+
+## 系统用例图
+
+![](https://github.com/819894914/Badminton-Club/blob/master/src/main/resources/static/images/%E7%B3%BB%E7%BB%9F%E7%94%A8%E4%BE%8B%E5%9B%BE.drawio.png?raw=true)
 
 ## 数据字典
 
@@ -63,8 +69,8 @@
 
 网站前台页面
 
-![image-20220520144221661](C:\Users\wo cai mou ren\AppData\Roaming\Typora\typora-user-images\image-20220520144221661.png)
+![](https://github.com/819894914/Badminton-Club/blob/master/src/main/resources/static/images/image-20220520144221661.png?raw=true)
 
 网站后台管理页面
 
-![image-20220520144244528](C:\Users\wo cai mou ren\AppData\Roaming\Typora\typora-user-images\image-20220520144244528.png)
+![](https://github.com/819894914/Badminton-Club/blob/master/src/main/resources/static/images/image-20220520144244528.png?raw=true)

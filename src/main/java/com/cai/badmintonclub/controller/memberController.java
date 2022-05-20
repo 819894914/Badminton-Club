@@ -6,6 +6,8 @@ import com.cai.badmintonclub.pojo.member;
 import com.cai.badmintonclub.service.loginService;
 import com.cai.badmintonclub.service.memberService;
 import com.sun.org.apache.regexp.internal.RE;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+@Api(tags = "社团成员管理控制类")
 @Controller
 public class memberController {
     @Autowired
@@ -24,6 +27,7 @@ public class memberController {
 
 
 
+    @ApiOperation("添加社团成员操作")
     @ResponseBody
     @RequestMapping("/addmember")
     public String addmember(String addmembername, String addmembersex, String addmembergrade, String addmemberidentity, String addmemberphone, String addmemberaccount, String addmemberpassword) {
@@ -70,6 +74,7 @@ public class memberController {
         }
     }
 
+    @ApiOperation("根据ID查找社团成员")
     @ResponseBody
     @RequestMapping("/findmemberbyid")
     public member findmemberbyid(int memberid){
@@ -78,6 +83,7 @@ public class memberController {
 
 
 
+    @ApiOperation("更新社团成员信息")
     @ResponseBody
     @RequestMapping("/updatemember")
     public String updatemember(int memberid,String membername, String membersex, String membergrade, String memberidentity, String memberphone){
@@ -102,12 +108,14 @@ public class memberController {
         }
     }
 
+    @ApiOperation("删除对应ID的社团成员")
     @RequestMapping("/deletemember/{memberid}")
     public String deletemember(@PathVariable("memberid") int memberid){
         this.memberservice.deletemember(memberid);
         return "redirect:/membermanagement";
     }
 
+    @ApiOperation("通过姓名查找社团成员")
     @RequestMapping("/findMemeberByName")
     public ModelAndView findMemeberByName(@RequestParam(value = "pn", defaultValue = "1") Integer pn,String memberName){
         ModelAndView modelAndView=new ModelAndView();

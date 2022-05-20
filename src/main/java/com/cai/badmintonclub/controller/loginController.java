@@ -3,6 +3,8 @@ package com.cai.badmintonclub.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cai.badmintonclub.pojo.member;
 import com.cai.badmintonclub.service.loginService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,22 +12,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
 
+@Api(tags = "用户登录相关操作控制器类")
 @Controller
 public class loginController {
     @Autowired
     private loginService loginService;
 
-
+    @ApiOperation("跳转登录页面")
     @RequestMapping("/login")
     public String toLogin() {
         return "UserAction/login";
     }
 
+    @ApiOperation("跳转注册页面")
     @RequestMapping("/register")
     public String register() {
         return "UserACtion/register";
     }
 
+    @ApiOperation("登录操作")
     @PostMapping("/doLogin")
     public String doLogin(String account, String password, HttpSession session, Model model) {
         QueryWrapper<member> queryWrapper = new QueryWrapper<>();
@@ -39,13 +44,13 @@ public class loginController {
             return "redirect:/index";
         }
     }
-
+    @ApiOperation("登出操作")
     @RequestMapping("/loginOut")
     public String loginOut(HttpSession HttpSession) {
         HttpSession.removeAttribute("member");
         return "redirect:/index";
     }
-
+    @ApiOperation("注册操作")
     @RequestMapping("/doRegister")
     public String doregister(String account, String password, String name, String sex, String grade, String phone, Model Model) {
         if(!account.matches("^[a-zA-Z][a-zA-Z0-9_]{3,9}$")){
@@ -87,6 +92,7 @@ public class loginController {
             }
     }
 
+    @ApiOperation("跳转个人信息页面")
     @RequestMapping("/personinform")
     public String personinform(HttpSession HttpSession,Model model){
         member member=(member)HttpSession.getAttribute("member");
@@ -95,6 +101,7 @@ public class loginController {
         return "UserAction/personinform";
     }
 
+    @ApiOperation("更新个人信息操作")
     @RequestMapping("/updatePersonInform")
     public String updatePersonInform(HttpSession HttpSession,String name, String sex, String grade, String phone){
         member member=(member)HttpSession.getAttribute("member");
@@ -107,11 +114,13 @@ public class loginController {
         return "UserAction/personinform";
     }
 
+    @ApiOperation("跳转修改密码页面")
     @RequestMapping("/toChangePasswordPage")
     public String toChangePasswordPage(){
         return "UserAction/changePassword";
     }
 
+    @ApiOperation("修改密码操作")
     @RequestMapping("/changePassword")
     public String changePassword(String password,HttpSession HttpSession){
         member member=(member)HttpSession.getAttribute("member");

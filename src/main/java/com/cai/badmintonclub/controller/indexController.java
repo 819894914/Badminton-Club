@@ -6,6 +6,8 @@ import com.cai.badmintonclub.pojo.member;
 import com.cai.badmintonclub.pojo.messages;
 import com.cai.badmintonclub.pojo.messagesBoard;
 import com.cai.badmintonclub.service.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+@Api(tags = "社团前台页面控制类")
 @Controller
 public class indexController {
     @Autowired
@@ -30,7 +33,7 @@ public class indexController {
     @Autowired
     private messagesBoardService messagesBoardService;
 
-
+    @ApiOperation("跳转主页")
     @RequestMapping(value={"/","/index"})
     public ModelAndView index(HttpSession HttpSession){
         ModelAndView modelAndView=new ModelAndView();
@@ -56,6 +59,7 @@ public class indexController {
 
 
 
+    @ApiOperation("跳转新闻页面")
     @RequestMapping("/news")
     public String news(Model model,@RequestParam(value = "pn", defaultValue = "1") Integer pn){
         Page<messages> page=new Page<>(pn,10);
@@ -67,7 +71,7 @@ public class indexController {
         return  "ClubHomepage/news";
     }
 
-
+    @ApiOperation("跳转公告页面")
     @RequestMapping("notices")
     public String notices(Model model,@RequestParam(value = "pn", defaultValue = "1") Integer pn){
         Page<messages> page=new Page<>(pn,10);
@@ -78,7 +82,7 @@ public class indexController {
         model.addAttribute("page",noticesPage);
         return "ClubHomepage/notices";
     }
-
+    @ApiOperation("跳转社团留言板")
     @RequestMapping("/messageboard")
     public String messageboard(Model model,@RequestParam(value = "pn", defaultValue = "1") Integer pn){
         Page<messagesBoard> page=new Page<>(pn,10);
@@ -87,7 +91,7 @@ public class indexController {
         return "ClubHomepage/messageboard";
     }
 
-
+    @ApiOperation("跳转羽毛球知识页面")
     @RequestMapping("knowledge")
     public ModelAndView knowledge(){
         ModelAndView modelAndView = new ModelAndView();
@@ -97,7 +101,7 @@ public class indexController {
         return modelAndView;
     }
 
-
+    @ApiOperation("跳转社团成员页面")
     @RequestMapping("/member")
     public ModelAndView member(){
         ModelAndView modelAndView=new ModelAndView();
@@ -120,7 +124,7 @@ public class indexController {
         return  modelAndView;
     }
 
-
+    @ApiOperation("跳转社团简介页面")
     @RequestMapping("communityprofile")
     public ModelAndView communityprofile(){
         ModelAndView modelAndView = new ModelAndView();
@@ -130,12 +134,13 @@ public class indexController {
         return modelAndView;
     }
 
-
+    @ApiOperation("跳转加入我们页面")
     @RequestMapping("joinus")
     public String joinus(){
         return "ClubHomepage/joinus";
     }
 
+    @ApiOperation("查询对应新闻或公告")
     @RequestMapping("/findMessageByIdAndKind")
     public ModelAndView findMessageByIdAndKind(String messagesId, String messagesKind){
        ModelAndView modelAndView=new ModelAndView();

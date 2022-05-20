@@ -15,13 +15,13 @@ public class loginWebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/static/css/**","/static/images/**","/static/videos/**","/static/js/**")
                 .excludePathPatterns("/findMessageByIdAndKind")
-                .excludePathPatterns("/","/index","/login","/joinus","/news","/notices","/knowledge","/communityprofile","/doLogin","/register","/doRegister","/loginOut","/personinform","/updatePersonInform","/changePassword","/index","/upload","/upload-img");
+                .excludePathPatterns("/","/index","/login","/joinus","/news","/notices","/knowledge","/communityprofile","/doLogin","/register","/doRegister","/loginOut","/personinform","/updatePersonInform","/changePassword","/index","/upload","/upload-img","/swagger-ui/");
         registry.addInterceptor(new adminInterceptor())
                 .addPathPatterns("/briefmanagement","/newsmanagement","/noticesmanagement","/joinmanagement","/newsdetails","/noticesdetails","/knowledgemanagement")
                 .addPathPatterns("/updatebrief","updateknowledge","/addnews","/deletenews/{newsid}","/updatenews/{newsid}","/findnewsbyid/{newsid}","/addnotices","/deletenotices/{noticesid}")
                 .addPathPatterns("/updatenotices/{noticesid}","findnoticesbyid/{noticesid}")
                 .excludePathPatterns("/css/**","/images/**","/videos/**","/js/**")
                 .excludePathPatterns("/","/index","/login","/joinus","/news","/notices","/knowledge","/communityprofile","/doLogin","/upload")
-                .excludePathPatterns("/upload-img");
+                .excludePathPatterns("/upload-img","/swagger-ui/");
     }
 }
